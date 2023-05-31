@@ -15,9 +15,9 @@
     <header class="container text-center py-4">
         <h1>{{ config('app.name') }}</h1>
     </header>
-    <body class="container">
+    <main class="container">
         @yield('content')
-    </body>
+    </main>
     <footer></footer>    
 </body>
 </html>

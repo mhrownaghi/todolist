@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task as ModelsTask;
+use App\Models\Task as TaskModel;
+use Illuminate\Contracts\View\View;
 
 class TaskController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the tasks
+     */
+    public function index(): View
     {
-        $tasks = ModelsTask::all();
-        return view('list', [
-            'tasks' => $tasks,
-        ]);
+        return view('list')->with('tasks', TaskModel::all());
     }
 
-    public function create()
+    /**
+     * Display form for creating a task
+     */
+    public function create(): View
     {
         return view('create');
     }

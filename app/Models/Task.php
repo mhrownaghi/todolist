@@ -22,4 +22,6 @@ class Task extends Model
         'start',
         'end',
     ];
+
+    public $timestamps = false;
 }

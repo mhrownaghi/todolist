@@ -2,6 +2,12 @@
 @section('content')
 
 <h2 class="text-center">Task list</h2>
+@if ($message = session('message'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ $message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>

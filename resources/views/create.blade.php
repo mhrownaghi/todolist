@@ -1,21 +1,24 @@
 @extends('layouts.default')
 @section('content')
-<h2 class="text-center">Task Form</h2>
+<h2 class="text-center">Task create form</h2>
 @if ($errors->any())
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
         Some of fields have incorrect values.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
-<form>
-    {{ csrf_field() }}
+
+<form method="POST"  action="{{ route('tasks.store') }}">
+    @csrf
     <div class="row g-3">
         <div class="col-12">
             <label for="name" class="form-label">Name</label>
             <input type="text" name="name" id="name" @class(['form-control', 'is-invalid'=> $errors->has('name')])
             value="{{ old('name') }}">
             @error('name')
-            <div class=".invalid-feedback">Name field is required.</div>
+                @foreach ($errors->get('name') as $message)
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @endforeach
             @enderror
         </div>
         <div class="col-6">
@@ -23,7 +26,9 @@
             <input type="date" name="start" id="start" @class(['form-control', 'is-invalid' => $errors->has('start')])
             value="{{ old('start') }}">
             @error('start')
-            <div class=".invalid-feedback">Start field is required.</div>
+                @foreach ($errors->get('start') as $message)
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @endforeach
             @enderror
         </div>
         <div class="col-6">
@@ -31,16 +36,20 @@
             <input type="date" name="end" id="end" @class(['form-control', 'is-invalid' => $errors->has('end')])
             value="{{ old('end') }}">
             @error('end')
-            <div class=".invalid-feedback">End field is required.</div>
+                @foreach ($errors->get('end') as $message)
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @endforeach
             @enderror
         </div>
         <div class="col-6">
             <label for="priority" class="form-label">Priority</label>
             <input type="number" name="priority" id="priority" min="1" max="10"
                 @class(['form-control', 'is-invalid' => $errors->has('priority')])
-                value="{{ old('priority') ?? 1 }}">
+                value="{{ old('priority', 1) }}">
             @error('priority')
-            <div class="invalid-feedback">Priority field is required.</div>
+                @foreach ($errors->get('priority') as $message)
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @endforeach
             @enderror
         </div>
         <div class="col-6">
@@ -51,7 +60,9 @@
                 <option value="Completed" @selected(old('status') == 'Completed')>Completed</option>
             </select>
             @error('status')
-                <div class="invalid-feedback">Status field is required.</div>
+                @foreach ($errors->get('status') as $message)
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @endforeach
             @enderror
         </div>
         <div class="col-12">

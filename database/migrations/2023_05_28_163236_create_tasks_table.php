@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('priority');
             $table->date('start');
             $table->date('end');
-            $table->tinyText('description')->nullable();
+            $table->text('description')->nullable();
         });
     }
 

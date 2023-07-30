@@ -12,6 +12,7 @@ class TaskController extends Controller
     public function index(): View
     {
         $tasks = Task::all();
+
         return view('list', compact('tasks'));
     }
 
@@ -30,6 +31,7 @@ class TaskController extends Controller
         if ($task) {
             $message = 'Task created successfully';
             session()->flash('message', $message);
+
             return redirect()->route('tasks.index');
         }
 

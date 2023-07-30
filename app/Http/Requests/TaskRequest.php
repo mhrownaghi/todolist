@@ -27,12 +27,13 @@ class TaskRequest extends FormRequest
         return [
             'name' => 'required',
             'start' => 'required|date',
-            'end' => 'required|date',
+            'end' => 'required|date|after_or_equal:start',
             'priority' => 'required|numeric|between:1,10',
             'status' => [
                 'required',
                 Rule::in(['Incomplete', 'In progress', 'Completed']),
             ],
+            'description' => '',
         ];
     }
 }

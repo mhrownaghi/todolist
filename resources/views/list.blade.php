@@ -17,6 +17,7 @@
                 <th scope="col">name</th>
                 <th scope="col">start</th>
                 <th scope="col">end</th>
+                <th scope="col">remaining/total</th>
                 <th scope="col">status</th>
             </tr>
         </thead>
@@ -28,6 +29,7 @@
                 <td nowrap>{{ $task->name }}</td>
                 <td nowrap>{{ $task->start->format('d F Y') }}</td>
                 <td nowrap>{{ $task->end->format('d F Y') }}</td>
+                <td nowrap>{{ $task->remainingDays . '/' . $task->totalDays }}</td>
                 <td nowrap>{{ $task->status }}</td>
             </tr>
             @empty

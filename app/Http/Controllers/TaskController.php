@@ -3,40 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
-use App\Models\Task as TaskModel;
+use App\Models\Task;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the tasks
-     */
     public function index(): View
     {
-        return view('list')->with('tasks', TaskModel::all());
+        $tasks = Task::all();
+        return view('list', compact('tasks'));
     }
 
     /**
-     * Display form for creating a task
+     * Display the form for creating a new task.
      */
     public function create(): View
     {
         return view('create');
     }
 
-    /**
-     * Store a newly task in database
-     * 
-     * @param TaskRequest $request
-     */
-    public function store(TaskRequest $request)
+    public function store(TaskRequest $request): RedirectResponse
     {
-        $request->validated();
-        $newTask = new TaskModel;
-        $newTask->fill($request->all());
-        if ($newTask->save()) {
-            session()->flash(key: 'message', value: 'Task created successfully');
+        $task = Task::create($request->validated());
+
+        if ($task) {
+            $message = 'Task created successfully';
+            session()->flash('message', $message);
             return redirect()->route('tasks.index');
         }
+
+        return redirect()->back();
     }
 }

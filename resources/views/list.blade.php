@@ -37,6 +37,7 @@
             @endforelse
         </tbody>
     </table>
+    {{ $tasks->links() }}
 </div>
 <p>*: "pr" means "priority"</p>
 

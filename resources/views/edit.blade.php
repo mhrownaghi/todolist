@@ -24,7 +24,7 @@
         <div class="col-6">
             <label for="start" class="form-label">Start</label>
             <input type="date" name="start" id="start" @class(['form-control', 'is-invalid' => $errors->has('start')])
-            value="{{ old('start', $task->start) }}">
+            value="{{ old('start', $task->start->format('Y-m-d')) }}">
             @error('start')
                 @foreach ($errors->get('start') as $message)
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -34,7 +34,7 @@
         <div class="col-6">
             <label for="end" class="form-label">End</label>
             <input type="date" name="end" id="end" @class(['form-control', 'is-invalid' => $errors->has('end')])
-            value="{{ old('end', $task->end) }}">
+            value="{{ old('end', $task->end->format('Y-m-d')) }}">
             @error('end')
                 @foreach ($errors->get('end') as $message)
                     <div class="invalid-feedback">{{ $message }}</div>

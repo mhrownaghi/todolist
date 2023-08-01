@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\Task;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\Task;
 
 class TaskControllerTest extends TestCase
 {
@@ -81,7 +81,7 @@ class TaskControllerTest extends TestCase
         $task = Task::factory()->create();
         $newStatus = 'Completed';
         $data = ['status' => $newStatus];
-        
+
         // Act
         $path = route('tasks.changeStatus', ['task' => $task->id]);
         $response = $this->post($path, $data);
@@ -109,5 +109,71 @@ class TaskControllerTest extends TestCase
 
         // Assert
         $response->assertStatus(404);
+    }
+
+    /**
+     * @test
+     * Test updating a task
+     */
+    public function test_updates_task_and_redirects_to_index()
+    {
+        // Arrange
+        $task = Task::factory()->create();
+        $requestData = [
+            'name' => 'Test Task',
+            'status' => 'Incomplete',
+            'priority' => 1,
+            'start' => '2020-01-10',
+            'end' => '2020-01-20',
+            'description' => 'this is a test',
+        ];
+
+        // Act
+        $response = $this->post(route('tasks.update', $task->id), $requestData);
+
+        // Assert
+        $response->assertRedirect(route('tasks.index'));
+        $this->assertDatabaseHas('tasks', [
+            'name' => 'Test Task',
+            'status' => 'Incomplete',
+            'priority' => 1,
+            'start' => '2020-01-10',
+            'end' => '2020-01-20',
+            'description' => 'this is a test',
+        ]);
+        $this->assertTrue(session()->has('message'));
+    }
+
+    /**
+     * @test
+     * test updating task on failure
+     */
+    public function it_redirects_back_if_task_update_fails()
+    {
+        // Arrange
+        $taskId = 1;
+        $requestData = [
+            'name' => 'Test Task',
+            'status' => 'Incomplete',
+            'priority' => 1,
+            'start' => '2020-01-10',
+            'end' => '2020-01-20',
+            'description' => 'this is a test',
+        ];
+
+        // Act
+        $response = $this->post(route('tasks.update', $taskId), $requestData);
+
+        // Assert
+        $response->assertStatus(404);
+        $this->assertDatabaseMissing('tasks', [
+            'name' => 'Test Task',
+            'status' => 'Incomplete',
+            'priority' => 1,
+            'start' => '2020-01-10',
+            'end' => '2020-01-20',
+            'description' => 'this is a test',
+        ]);
+        $this->assertFalse(session()->has('message'));
     }
 }

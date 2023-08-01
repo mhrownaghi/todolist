@@ -55,4 +55,20 @@ class TaskController extends Controller
 
         return view('edit', compact('task'));
     }
+
+    public function update(int $id, TaskRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        $task = Task::findOrFail($id);
+        $task->fill($data);
+        $isUpdated = $task->save();
+
+        if ($isUpdated) {
+            session()->flash('message', 'Task updated successfully');
+
+            return redirect()->route('tasks.index');
+        }
+
+        return redirect()->back();
+    }
 }

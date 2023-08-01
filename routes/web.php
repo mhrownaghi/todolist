@@ -12,4 +12,5 @@ Route::name('tasks.')->group(function () {
     Route::post('/tasks', [$controller, 'store'])->name('store');
     Route::post('/tasks/{task}/change-status', [$controller, 'changeStatus'])->name('changeStatus');
     Route::get('/tasks/{task}', [$controller, 'edit'])->name('edit');
+    Route::post('/tasks/{task}', [$controller, 'update'])->name('update');
 });

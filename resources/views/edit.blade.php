@@ -8,7 +8,7 @@
     </div>
 @endif
 
-<form method="POST"  action="{{ route('tasks.store') }}">
+<form method="POST"  action="{{ route('tasks.update', ['task' => $task->id]) }}">
     @csrf
     <div class="row g-3">
         <div class="col-12">

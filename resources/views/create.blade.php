@@ -67,7 +67,7 @@
         </div>
         <div class="col-12">
             <label for="description" class="form-label">Description <span class="text-muted">(Optional)</span></label>
-            <textarea name="description" id="description" cols="30" rows="5" class="form-control"></textarea>
+            <textarea name="description" id="description" rows="5" class="form-control">{{ old('description') }}</textarea>
         </div>
     </div>
     <hr class="my-4">

@@ -48,4 +48,11 @@ class TaskController extends Controller
 
         return redirect()->route('tasks.index');
     }
+
+    public function edit(int $id): View
+    {
+        $task = Task::findOrFail($id);
+
+        return view('edit', compact('task'));
+    }
 }

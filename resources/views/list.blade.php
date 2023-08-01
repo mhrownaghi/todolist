@@ -26,7 +26,9 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $task->priority }}</td>
-                <td nowrap>{{ $task->name }}</td>
+                <td nowrap>
+                    <a href="{{ route('tasks.edit', $task->id) }}">{{ $task->name }}</a>
+                </td>
                 <td nowrap>{{ $task->start->format('d F Y') }}</td>
                 <td nowrap>{{ $task->end->format('d F Y') }}</td>
                 <td nowrap>{{ $task->remainingDays . '/' . $task->totalDays }}</td>

@@ -54,7 +54,7 @@
         </div>
         <div class="col-6">
             <label for="status" class="form-label">Status</label>
-            <select name="status" id="status" @class(['form-control', 'is-invalid' => $errors->has('status')])>
+            <select name="status" id="status" @class(['form-select', 'is-invalid' => $errors->has('status')])>
                 <option value="Incomplete" @selected(old('status') == 'Incomplete')>Incomplete</option>
                 <option value="In Progress" @selected(old('status') == 'In Progress')>In progress</option>
                 <option value="Completed" @selected(old('status') == 'Completed')>Completed</option>

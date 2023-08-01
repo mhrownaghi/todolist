@@ -3,10 +3,10 @@
 
 <h2 class="text-center">Task list</h2>
 @if ($message = session('message'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ $message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ $message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 @endif
 <div class="table-responsive">
     <table class="table table-striped">
@@ -30,11 +30,20 @@
                 <td nowrap>{{ $task->start->format('d F Y') }}</td>
                 <td nowrap>{{ $task->end->format('d F Y') }}</td>
                 <td nowrap>{{ $task->remainingDays . '/' . $task->totalDays }}</td>
-                <td nowrap>{{ $task->status }}</td>
+                <td nowrap>
+                    <form action="{{ route('tasks.changeStatus', $task->id) }}" method="POST">
+                        {{ csrf_field() }}
+                        <select name="status" onchange="event.target.form.submit()">
+                            <option value="Incomplete" @selected($task->status == 'Incomplete')>Incomplete</option>
+                            <option value="In Progress" @selected($task->status == 'In Progress')>In progress</option>
+                            <option value="Completed" @selected($task->status == 'Completed')>Completed</option>
+                        </select>
+                    </form>
+                </td>
             </tr>
             @empty
             <tr>
-                <td colspan="6" class="text-center">No task found.</td>
+                <td colspan="7" class="text-center">No task found.</td>
             </tr>
             @endforelse
         </tbody>

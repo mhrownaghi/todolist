@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class TaskRequest extends FormRequest
+class ChangeStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,15 +25,10 @@ class TaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'start' => 'required|date',
-            'end' => 'required|date|after_or_equal:start',
-            'priority' => 'required|numeric|between:1,10',
             'status' => [
                 'required',
                 Rule::in(['Incomplete', 'In Progress', 'Completed']),
             ],
-            'description' => '',
         ];
     }
 }

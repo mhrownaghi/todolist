@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangeStatusRequest;
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Illuminate\Contracts\View\View;
@@ -36,5 +37,15 @@ class TaskController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function changeStatus(int $id, ChangeStatusRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        $task = Task::findOrFail($id);
+        $task->status = $data['status'];
+        $task->save();
+
+        return redirect()->route('tasks.index');
     }
 }

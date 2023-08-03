@@ -2,6 +2,20 @@
 @section('content')
 
 <h2 class="text-center">Task list</h2>
+<div class="toolbar p-2 border">
+    <a href="{{ route('tasks.create') }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i>
+        Create Task
+    </a>
+    <button type="button" class="btn btn-outline-primary">
+        <i class="bi bi-x-lg"></i>
+        Delete Task(s)
+    </button>
+    <button type="button" class="btn btn-outline-primary">
+        <i class="bi bi-pencil-square"></i>
+        Edit Task
+    </button>
+</div>
 @if ($message = session('message'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
     {{ $message }}

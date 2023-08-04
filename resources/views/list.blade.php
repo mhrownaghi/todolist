@@ -2,12 +2,12 @@
 @section('content')
 
 <h2 class="text-center">Task list</h2>
-<div class="toolbar p-2 border">
+<div class="toolbar p-2 border mb-2">
     <a href="{{ route('tasks.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i>
         Create Task
     </a>
-    <button type="button" class="btn btn-outline-primary">
+    <button type="button" class="btn btn-outline-primary" id="deleteTasks">
         <i class="bi bi-x-lg"></i>
         Delete Task(s)
     </button>
@@ -26,6 +26,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th scope="col"></th>
                 <th scope="col">#</th>
                 <th scope="col">pr*</th>
                 <th scope="col">name</th>
@@ -38,6 +39,9 @@
         <tbody>
             @forelse ($tasks as $task)
             <tr>
+                <td>
+                    <input class="form-check-input task-select" type="checkbox" value="{{ $task->id }}">
+                </td>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $task->priority }}</td>
                 <td nowrap>
@@ -59,7 +63,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="7" class="text-center">No task found.</td>
+                <td colspan="8" class="text-center">No task found.</td>
             </tr>
             @endforelse
         </tbody>
@@ -67,5 +71,27 @@
     {{ $tasks->links() }}
 </div>
 <p>*: "pr" means "priority"</p>
+<script>
+    document.getElementById('deleteTasks').addEventListener('click', function() {
+        let tasks = [];
+        document.querySelectorAll('.task-select').forEach(function(el) {
+            if (el.checked) {
+                tasks.push(el.value);
+            }
+        });
+        if (tasks.length == 0) {
+            alert('Please select at least one task.');
+        } else {
+            axios.delete("{{ route('tasks.delete') }}", {
+                data: {
+                    tasks,
+                    _token: '{{ csrf_token() }}'
+                }
+            }).then(function(response) {
+                location.href = "{{ route('tasks.index') }}";
+            });
+        }
+    });
+</script>
 
 @endsection

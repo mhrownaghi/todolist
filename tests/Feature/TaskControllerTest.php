@@ -2,6 +2,7 @@
 
 use App\Models\Task;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Tests\TestCase;
 
 class TaskControllerTest extends TestCase
@@ -175,5 +176,54 @@ class TaskControllerTest extends TestCase
             'description' => 'this is a test',
         ]);
         $this->assertFalse(session()->has('message'));
+    }
+
+    /**
+     * @test
+     */
+    public function testDestroyNoTasksToDelete()
+    {
+        $request = new Request();
+        $request->tasks = [];
+
+        $response = $this->deleteJson(route('tasks.delete'), $request->toArray());
+
+        $response->assertJson([
+            'success' => true,
+            'count' => 0,
+            'tasks' => []
+        ]);
+    }
+
+    public function testDestroyMultipleTasks()
+    {
+        $tasks = Task::factory()->count(3)->create();
+
+        $request = new Request();
+        $request->tasks = $tasks->pluck('id')->toArray();
+
+        $response = $this->deleteJson(route('tasks.delete'), ['tasks' => $request->tasks]);
+
+        $response->assertJson([
+            'success' => true,
+            'count' => 3,
+            'tasks' => $request->tasks
+        ]);
+    }
+
+    public function testDestroySingleTask()
+    {
+        $task = Task::factory(Task::class)->create();
+
+        $request = new Request();
+        $request->tasks = [$task->id];
+
+        $response = $this->deleteJson(route('tasks.delete'), ['tasks' => $request->tasks]);
+
+        $response->assertJson([
+            'success' => true,
+            'count' => 1,
+            'tasks' => $request->tasks
+        ]);
     }
 }

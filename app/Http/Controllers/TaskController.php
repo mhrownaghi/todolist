@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangeStatusRequest;
-use App\Http\Requests\TaskRequest;
+use App\Http\Requests\SaveTaskRequest;
 use App\Models\Task;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -25,7 +27,7 @@ class TaskController extends Controller
         return view('create');
     }
 
-    public function store(TaskRequest $request): RedirectResponse
+    public function store(SaveTaskRequest $request): RedirectResponse
     {
         $task = Task::create($request->validated());
 
@@ -56,7 +58,7 @@ class TaskController extends Controller
         return view('edit', compact('task'));
     }
 
-    public function update(int $id, TaskRequest $request): RedirectResponse
+    public function update(int $id, SaveTaskRequest $request): RedirectResponse
     {
         $data = $request->validated();
         $task = Task::findOrFail($id);
@@ -70,5 +72,20 @@ class TaskController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function destroy(Request $request): JsonResponse
+    {
+        $count = Task::destroy($request->tasks);
+
+        if ($count) {
+            session()->flash('message', 'Tasks deleted successfully');
+        }
+
+        return response()->json([
+            'success' => true,
+            'count' => $count,
+            'tasks' => $request->tasks
+        ]);
     }
 }
